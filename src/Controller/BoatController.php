@@ -108,7 +108,7 @@ class BoatController extends AbstractController
     }
 
     /**
-     * @Route("/direction/{direction}", name="moveDirection")
+     * @Route("/direction/{direction}", name="moveDirection", requirements= {"direction": "[NSEW]"})
      *
      * @param string $direction
      * @param BoatRepository $boatRepository
