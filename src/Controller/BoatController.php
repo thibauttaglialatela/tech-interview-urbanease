@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Boat;
 use App\Form\BoatType;
 use App\Repository\BoatRepository;
+use App\Repository\TileRepository;
+use App\Services\MapManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -115,7 +117,7 @@ class BoatController extends AbstractController
      * @param ManagerRegistry $doctrine
      * @return Response
      */
-    public function moveDirection(string $direction, BoatRepository $boatRepository): Response
+    public function moveDirection(string $direction, BoatRepository $boatRepository, TileRepository $tileRepository, MapManager $mapManager): Response
     {
         $boat = $boatRepository->findOneBy([]);
         $em = $this->getDoctrine()->getManager();
@@ -137,7 +139,13 @@ class BoatController extends AbstractController
                 break;
             
         }
+        if (!$mapManager->tileExists($boat->getCoordX(), $boat->getCoordY())) {
+            $this->addFlash('warning', "Oups Jack, you're out the world");
+            return $this->redirectToRoute('map');
+        }
         $em->flush();
+
+        
 
         return $this->redirectToRoute('map');
 

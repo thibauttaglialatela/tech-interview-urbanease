@@ -1,18 +1,21 @@
 <?php
 namespace App\Services;
 
-use App\Repository\TileRepository;
+use App\Entity\Tile;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class MapManager
+class MapManager extends AbstractController
 {
-    public function tileExists(TileRepository $tileRepository): bool
-    {
-        /* $tile = $tileRepository->findOneBy([]);
+    
 
-        if ($tile->getCoordX() >= 0 || $tile->getCoordX() <= 11 && ($tile->getCoordY() >= 0 || $tile->getCoordY() <= 11)) {
+    public function tileExists(int $x, int $y): bool
+    {
+        $tile = $this->getDoctrine()->getRepository(Tile::class)->findOneBy(['coordX' => $x, 'coordY' => $y]);
+        
+        if ($tile) {
             return true;
         } else {
             return false;
-        } */
+        }
     }
 }
