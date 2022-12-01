@@ -1,14 +1,18 @@
 <?php
 namespace App\Services;
 
+use App\Repository\TileRepository;
+
 class MapManager
 {
-    public function tileExists(int $x, int $y): bool
+    public function tileExists(TileRepository $tileRepository): bool
     {
-        if ($x >= 0 || $x <= 11 && ($y >= 0 || $y <= 11)) {
+        /* $tile = $tileRepository->findOneBy([]);
+
+        if ($tile->getCoordX() >= 0 || $tile->getCoordX() <= 11 && ($tile->getCoordY() >= 0 || $tile->getCoordY() <= 11)) {
             return true;
         } else {
             return false;
-        }
+        } */
     }
 }
