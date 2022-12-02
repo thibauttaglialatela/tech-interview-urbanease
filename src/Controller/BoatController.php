@@ -144,6 +144,10 @@ class BoatController extends AbstractController
             return $this->redirectToRoute('map');
         }
         $em->flush();
+        if ($mapManager->checkTreasure($boat)) {
+            $this->addFlash('success', "Well done Jack, you found the treasure");
+            return $this->redirectToRoute('map');
+        }
 
         
 

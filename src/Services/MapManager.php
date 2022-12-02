@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\Boat;
 use App\Entity\Tile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -31,5 +32,16 @@ class MapManager extends AbstractController
         }
 
         return $islandArray[array_rand($islandArray)];
+    }
+
+    public function checkTreasure(Boat $boat): bool
+    {
+        $tile = $this->getDoctrine()->getRepository(Tile::class)->findOneBy(['coordX' => $boat->getCoordX(), 'coordY' => $boat->getCoordY()]);
+        if ($tile->getHasTreasure() === true) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
