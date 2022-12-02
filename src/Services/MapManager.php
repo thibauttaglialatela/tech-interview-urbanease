@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Entity\Tile;
-use App\Repository\TileRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MapManager extends AbstractController
@@ -21,9 +20,9 @@ class MapManager extends AbstractController
         }
     }
 
-    public function getRandomIsland(TileRepository $tileRepository)
+    public function getRandomIsland()
     {
-        $tiles = $tileRepository->findAll();
+        $tiles = $this->getDoctrine()->getRepository(Tile::class)->findAll();
         $islandArray = [];
         foreach ($tiles as $tile) {
             if ($tile->getType() === 'island') {
