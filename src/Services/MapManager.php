@@ -30,6 +30,6 @@ class MapManager extends AbstractController
             }
         }
 
-        return array_rand($islandArray);
+        return $islandArray[array_rand($islandArray)];
     }
 }

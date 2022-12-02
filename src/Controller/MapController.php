@@ -7,7 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Tile;
 use App\Repository\BoatRepository;
+use App\Repository\TileRepository;
 use App\Services\MapManager;
+use Doctrine\ORM\Mapping\Id;
 
 class MapController extends AbstractController
 {
@@ -36,18 +38,31 @@ class MapController extends AbstractController
     /**
      * @Route("/start", name="start")
      */
-    public function start(BoatRepository $boatRepository, MapManager $mapManager): Response
+    public function start(BoatRepository $boatRepository, MapManager $mapManager, TileRepository $tileRepository): Response
     {
         $em = $this->getDoctrine()->getManager();
         $boat = $boatRepository->findOneBy([]);
+        $tiles = $tileRepository->findAll();
         /* Reset the boat's coordinate to (0,0) */
         $boat->setCoordX(0)
         ->setCoordY(0);
         $em->flush();
 
         //remove the old treasure
-
+        foreach ($tiles as $tile) {
+            if($tile->getHasTreasure() === true) {
+                $tile->setHasTreasure(false);
+                $em->flush();
+            }
+        }
+        
         //put the treasure on an island
+        $randomIsland = $mapManager->getRandomIsland();
+        
+        //dd($randomIsland);
+        $treasureIsland = $tileRepository->findOneBy(['id' => $randomIsland->getId()]);
+        $treasureIsland->setHasTreasure(true);
+        $em->flush();
 
         return $this->redirectToRoute('map');
     }
