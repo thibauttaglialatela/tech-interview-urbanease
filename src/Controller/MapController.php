@@ -9,7 +9,6 @@ use App\Entity\Tile;
 use App\Repository\BoatRepository;
 use App\Repository\TileRepository;
 use App\Services\MapManager;
-use Doctrine\ORM\Mapping\Id;
 
 class MapController extends AbstractController
 {
@@ -43,7 +42,7 @@ class MapController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $boat = $boatRepository->findOneBy([]);
         $tiles = $tileRepository->findAll();
-        /* Reset the boat's coordinate to (0,0) */
+        /* Reset the boat's coordinates to (0,0) */
         $boat->setCoordX(0)
         ->setCoordY(0);
         $em->flush();
@@ -58,8 +57,6 @@ class MapController extends AbstractController
         
         //put the treasure on an island
         $randomIsland = $mapManager->getRandomIsland();
-        
-        //dd($randomIsland);
         $treasureIsland = $tileRepository->findOneBy(['id' => $randomIsland->getId()]);
         $treasureIsland->setHasTreasure(true);
         $em->flush();
