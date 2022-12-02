@@ -23,6 +23,8 @@ class MapController extends AbstractController
         }
 
         $boat = $boatRepository->findOneBy([]);
+        
+
 
         return $this->render('map/index.html.twig', [
             'map'  => $map ?? [],
